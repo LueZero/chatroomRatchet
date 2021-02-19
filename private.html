@@ -1,0 +1,56 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<head>
+  <title>私人聊天室</title>
+  <link type="text/css" rel="stylesheet" href="style.css" />
+</head>
+
+<div id="wrapper">
+  <div id="menu">
+    <h2 class="welcome">歡迎進入私人聊天室 <b></b></h2>
+    <!-- <p class="logout"><a id="exit" href="#"></a></p> -->
+    <div style="clear:both">
+    </div>
+  </div>
+
+  <div id="chatBox">
+
+  </div>
+
+
+  <input type="text" id="message" size="63" />
+  <input type="button" id="send" value="發送" />
+
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userId = urlParams.get('userId')
+    var conn = new WebSocket('ws://localhost:8080/test1?userId=' + userId);
+    conn.onopen = function (e) {
+      console.log("Connection established!");
+    };
+    conn.onmessage = function (e) {
+      console.log(e);
+      var data = JSON.parse(e.data);
+      var message = data.data;
+      var id = data.resourceId;
+      $("#chatBox").append('<div>' + message + '</p ></div >');
+    };
+    $("#send").click(function () {
+      var message = $("#message").val();
+      $("#chatBox").append('<div>' + message + '</p ></div >');
+      conn.send(JSON.stringify({ "message": message, "userId": userId }));
+    })
+  });
+</script>
+</body>
+
+</html>
