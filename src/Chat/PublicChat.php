@@ -35,7 +35,7 @@ class PublicChat implements MessageComponentInterface
     foreach ($this->clients as $client) {
       if ($from !== $client) {
         // The sender is not the receiver, send to each client connected
-        $client->send(json_encode(["data" => $msg["message"], "resourceId" => $from->resourceId]));
+        $client->send(json_encode(['data' => $msg['message'], 'resourceId' => $from->resourceId]));
       }
     }
   }
