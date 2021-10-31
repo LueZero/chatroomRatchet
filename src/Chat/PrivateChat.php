@@ -19,9 +19,9 @@ class PrivateChat implements MessageComponentInterface
   {
     // Store the new connection to send messages to later
     $queryString = $conn->WebSocket->request->getQuery()->toArray();
-    $userId = $queryString["userId"];
+    $userId = $queryString['userId'];
     $this->list[$conn->resourceId] = $conn;
-    // print_r($queryString->data["getID"]);
+    // print_r($queryString->data['getID']);
     $this->clients->attach($conn);
     echo "New connection! ({$conn->resourceId})\n";
   }
@@ -34,7 +34,7 @@ class PrivateChat implements MessageComponentInterface
     foreach ($this->clients as $client) {
       if ($from !== $client) {
         // The sender is not the receiver, send to each client connected
-        $client->send(json_encode(["data" => $msg["message"], "resourceId" => $from->resourceId]));
+        $client->send(json_encode(['data' => $msg['message'], 'resourceId' => $from->resourceId]));
       }
     }
   }
